@@ -13,6 +13,12 @@ type CustomerRepositoryDb struct {
 	client *sqlx.DB
 }
 
+func NewCustomerRepositoryDb(dbClient *sqlx.DB) CustomerRepositoryDb {
+	return CustomerRepositoryDb{
+		client: dbClient,
+	}
+}
+
 func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError) {
 	customers := make([]Customer, 0)
 	var err error
@@ -43,10 +49,4 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
 		return nil, errs.NewUnexpectedError("unexpected database error")
 	}
 	return &c, nil
-}
-
-func NewCustomerRepositoryDb(dbClient *sqlx.DB) CustomerRepositoryDb {
-	return CustomerRepositoryDb{
-		client: dbClient,
-	}
 }
