@@ -16,6 +16,10 @@ type CustomerService interface {
 	GetCustomer(string) (*dto.CustomerResponse, *errs.AppError)
 }
 
+func NewCustomerService(repository domain.CustomerRepository) DefaultCustomerService {
+	return DefaultCustomerService{repository}
+}
+
 func (s DefaultCustomerService) GetAllCustomers(status string) ([]dto.CustomerResponse, *errs.AppError) {
 	if status == "active" {
 		status = "1"
@@ -42,8 +46,4 @@ func (s DefaultCustomerService) GetCustomer(id string) (*dto.CustomerResponse, *
 	}
 	response := customer.ToDto()
 	return &response, nil
-}
-
-func NewCustomerService(repository domain.CustomerRepository) DefaultCustomerService {
-	return DefaultCustomerService{repository}
 }
